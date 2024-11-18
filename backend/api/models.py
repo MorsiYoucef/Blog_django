@@ -159,7 +159,10 @@ class Notification(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.type} - {self.post.title}"
+        if self.post:
+            return f"{self.type} - {self.post.title}"
+        else:
+            return "Notification"
     
     class Meta:
         ordering = ['date']
