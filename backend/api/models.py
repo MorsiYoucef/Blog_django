@@ -46,6 +46,15 @@ class Profile(models.Model):
         
         if self.full_name == "" or self.full_name == None:
             self.full_name = self.user.full_name
-        if self.username == "" or self.username == None:
-            self.username = self.user.full_name
+        
         super (User, self).save(*args, **kwargs)
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+post_save.connect(create_user_profile, sender=User)
+post_save.connect(save_user_profile, sender=User)
