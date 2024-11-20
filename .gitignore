@@ -1,0 +1,44 @@
+# Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Django-related
+db.sqlite3
+*.log
+*.pot
+*.py[cod]
+*.swp
+
+# Environment variables
+.env
+
+# Virtual environment
+venv/
+venv/*
+
+# Node.js (if applicable for the frontend folder)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# VSCode settings
+.vscode/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux system files
+*~
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Static and media files
+staticfiles/
+media/
