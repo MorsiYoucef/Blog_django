@@ -47,10 +47,12 @@ INSTALLED_APPS = [
     # custom apps
     "api",
     #corsheaders
-    "corsheaders",
-    "rest_framework",
-    "rest_framework_simplejwt.token_blacklist",
-    "drf_yasg"
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
+    'corsheaders',
+    'anymail',
+    'django_ckeditor_5',
 ]
 
 MIDDLEWARE = [
