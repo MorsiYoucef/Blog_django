@@ -38,7 +38,7 @@ class RegisterView(generics.CreateAPIView):
     # It specifies that the view allows any user (no authentication required).
     permission_classes = (AllowAny,)
     # It sets the serializer class to be used with this view.
-    serializer_class = api_serializer.RegisterSerializer
+    serializer_class = api_serializer.RegisterSerializer  
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
@@ -64,4 +64,6 @@ class PostCategoryListAPIView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        category = self.kwargs['category_slug']
+        category_slug = self.kwargs['category_slug']
+        category = api_models.Post.objects.filter(slug = category_slug)
+        return api_models.Post.objects.filter(category=category, status="Activate")

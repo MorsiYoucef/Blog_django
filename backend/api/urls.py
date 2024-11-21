@@ -9,7 +9,7 @@ urlpatterns = [
     path('user/register/', api_views.RegisterView.as_view()),
     path('user/profile/<user_id>/', api_views.ProfileView.as_view()),
 
-
-
-    
+    #Post Endpoints
+    path('post/category/list',api_views.CategoryListAPIView.as_view()),
+    path('post/category/posts',api_views.PostCategoryListAPIView.as_view()),
 ]
