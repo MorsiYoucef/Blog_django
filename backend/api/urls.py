@@ -11,5 +11,5 @@ urlpatterns = [
 
     #Post Endpoints
     path('post/category/list',api_views.CategoryListAPIView.as_view()),
-    path('post/category/posts',api_views.PostCategoryListAPIView.as_view()),
+    path('post/category/posts/<category_slug>/',api_views.PostCategoryListAPIView.as_view()),
 ]

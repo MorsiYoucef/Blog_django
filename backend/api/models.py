@@ -143,7 +143,6 @@ class BookMark(models.Model):
     class Meta:
         ordering = ['date']
         verbose_name_plural = "Bookmark"
-
     
 class Notification(models.Model):
     NOTI_TYPE =(
