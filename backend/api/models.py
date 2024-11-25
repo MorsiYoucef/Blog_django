@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser,User
+from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.utils.text import slugify
 from shortuuid.django_fields import ShortUUIDField
@@ -15,7 +15,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username']
 
     def __str__ (self):
-        return self.username
+        return self.email
 
     def save(self, *args, **kwargs):
         email_username, mobile = self.email.split("@")
@@ -24,7 +24,8 @@ class User(AbstractUser):
             self.full_name = email_username
         if self.username == "" or self.username == None:
             self.username = email_username
-        super (User, self).save(*args, **kwargs)
+
+        super().save(*args, **kwargs)
 
 
 class Profile(models.Model):
@@ -47,7 +48,7 @@ class Profile(models.Model):
         if self.full_name == "" or self.full_name == None:
             self.full_name = self.user.full_name
         
-        super (User, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 def create_user_profile(sender, instance, created, **kwargs):#signal handlers
     if created:

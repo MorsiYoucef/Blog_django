@@ -36,7 +36,7 @@ class RegisterView(generics.CreateAPIView):
      # It sets the queryset for this view to retrieve all User objects.
     queryset = api_models.User.objects.all()
     # It specifies that the view allows any user (no authentication required).
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
     # It sets the serializer class to be used with this view.
     serializer_class = api_serializer.RegisterSerializer  
 
