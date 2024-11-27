@@ -6,6 +6,7 @@ from shortuuid.django_fields import ShortUUIDField
 import shortuuid
 # Create your models here.
 
+#today i learned more about models
 class User(AbstractUser):
     username = models.CharField(unique=True, max_length=100)
     email = models.EmailField(unique=True)
