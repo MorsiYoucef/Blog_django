@@ -69,16 +69,10 @@ class Category(models.Model):
     def __str__(self):
         return self.title
     
-    # class Meta:
-    #     ordering = ['date']
-    #     verbose_name_plural = ["Category"]
-
-    
     def save(self, *args, **kwargs):
-        if self.slug == '' or self.slug == None:
+        if not self.slug:  # Check if slug is empty or None
             self.slug = slugify(self.title)
-
-            super(Category, self).save(*args, **kwargs)
+        super(Category, self).save(*args, **kwargs)  # Ensure the object is always saved
     
     def post_count(self):
         return Post.objects.filter(category=self).count()
@@ -93,7 +87,7 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE,null=True,blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True,related_name='posts')
     title = models.CharField(max_length=100)
     description =models.TextField(null=True, blank=True)
     image = models.FileField(upload_to="image",null=True, blank=True)
@@ -114,7 +108,7 @@ class Post(models.Model):
         if self.slug == '' or self.slug == None:
             self.slug = slugify(self.title) + "-" + shortuuid.uuid()[:2]
 
-            super(Category, self).save(*args, **kwargs)
+            super(Post, self).save(*args, **kwargs)
             #Entertain and Movie
             #entertainemnt 
 
