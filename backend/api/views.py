@@ -85,6 +85,15 @@ class PostDetailAPIView(generics.RetrieveAPIView):
     
 
 class LikePostAPIView(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'user_id': openapi.Schema(type=openapi.TYPE_INTEGER),
+                'post_id': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
+    )
     def post(self, request):
         user_id = request.data['user_id']
         post_id = request.data['post_id']
