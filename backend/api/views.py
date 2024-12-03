@@ -78,10 +78,13 @@ class PostListAPIView(generics.ListAPIView):
 class PostDetailAPIView(generics.RetrieveAPIView):
     serializer_class = api_serializer.PostSerializer
     permission_classes = [AllowAny]
-    lookup_field = 'slug'  # Use 'slug' instead of the default 'pk'
 
-    def get_queryset(self):
-        return api_models.Post.objects.filter(status="Active")
+    def get_object(self):
+        slug = self.kwargs['slug']
+        post = api_models.Post.objects.get(slug=slug, status="Active")
+        post.view += 1
+        post.save()
+        return post
     
 
 class LikePostAPIView(APIView):
@@ -140,5 +143,63 @@ class PostCommentAPIView(APIView):
         return Response({"message":"Comment addedm"}, status=status.HTTP_201_CREATED)
 
 
-def BookmarkPostAPIView(APIView):
+class BookmarkPostAPIView(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'user_id': openapi.Schema(type=openapi.TYPE_INTEGER),
+                'post_id': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
+    )
+
+    def post(self, request):
+        user_id = request.data['user_id']
+        post_id = request.data['post_id']
+
+        user = api_models.User.objects.get(id=user_id)
+        post = api_models.Post.objects.get(id=post_id)
+
+        bookmark = api_models.BookMark.objects.filter(post=post, user=user).first()
+
+        if bookmark:
+            bookmark.delete()
+            return Response({"message":"Post Un-Bookmarked"}, status=status.HTTP_200_OK)
+        else:
+            api_models.BookMark.objects.create(
+                user = user,
+                post = post,
+            )
+            api_models.Notification.objects.create(user=post.user,post=post,type="Bookmark")
+
+            return Response({"message":"Post Bookmarked"}, status=status.HTTP_201_CREATED)
+        
+class DashboardStats(generics.ListAPIView):
+    serializer_class = api_serializer.AuthorSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        user = api_models.User.objects.get(id=user_id)
+
+        views = api_models.Post.objects.filter(user=user).aggregate(view = Sum('view'))['view']
+        posts = api_models.Post.objects.filter(user=user).count()
+        likes = api_models.Post.objects.filter(user=user).aggregate(total_likes= Sum("likes"))['total_likes']
+        bookmarks = api_models.BookMark.objects.filter(user=user).count()
+
+        return [
+            {
+                "views":views,
+                "posts":posts,
+                "likes":likes,
+                "bookmarks":bookmarks,
+            }
+        ]
     
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset,many = True)
+
+        return Response(serializer.data)
+
