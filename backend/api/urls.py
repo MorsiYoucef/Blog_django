@@ -22,5 +22,6 @@ urlpatterns = [
     path('author/dashboard/post-list/<user_id>/', api_views.DashboardPostLists.as_view()),
     path('author/dashboard/comment-list/', api_views.DashboardCommentLists.as_view()),
     path('author/dashboard/noti-list/<user_id>/', api_views.DashboardNotificationLists.as_view()),
-    path('author/dashboard/noti-mark-seen/', api_views.DashboardMarkNotiSeenAPIView.as_view()),
+    path('author/dashboard/noti-mark-seen/', api_views.DashboardMarkNotificationAsSeen.as_view()),
+    path('author/dashboard/reply-comment/', api_views.DashboardReplyCommentAPIView.as_view()),
 ]
