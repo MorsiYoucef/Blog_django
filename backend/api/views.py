@@ -223,7 +223,7 @@ class DashboardCommentLists(generics.ListAPIView):
 
         return api_models.Comment.objects.filter(post__user=  user)
 
-class DashboardNotificationsLists(generics.ListAPIView):
+class DashboardNotificationLists(generics.ListAPIView):
     serializer_class = api_serializer.NotificationSerializer
     permission_classes = [AllowAny]
 
