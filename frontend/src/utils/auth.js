@@ -6,7 +6,7 @@ import axios from "./axios";
 
 // Importing jwt_decode to decode JSON Web Tokens
 // import jwt_decode from "jwt-decode";
-import { default as jwt_decode } from 'jwt-decode'
+// import { jwt_decode }from 'jwt-decode'
 
 // Importing the Cookies library to handle browser cookies
 import Cookies from "js-cookie";

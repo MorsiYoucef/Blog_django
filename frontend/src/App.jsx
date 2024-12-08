@@ -1,20 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Index from './views/core/Index'
 import MainWrapper from '../src/layouts/MainWrapper'
+
 function App() {
-  return 
-  ;<>
-    <Router>
+  return (
+    <BrowserRouter>
       <MainWrapper>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route />
-          <Route />
-          <Route />
         </Routes>
       </MainWrapper>
-    </Router>
-  </>
+    </BrowserRouter>
+  )
 }
 
 export default App
