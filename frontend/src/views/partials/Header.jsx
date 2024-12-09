@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useAuthStore } from '../store/auth'
+import { useAuthStore } from '../../store/auth'
 
 function Header() {
   const [isLoggedIn, user] = useAuthStore((state) => [

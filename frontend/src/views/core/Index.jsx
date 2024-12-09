@@ -1,81 +1,91 @@
 import { useState, useEffect } from 'react'
-import Header from '../../partials/Header'
-import Footer from '../../partials/Footer'
+import Header from '../partials/Header'
+import Footer from '../partials/Footer'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 import apiInstance from '../../utils/axios'
-import useUserData from '../../plugin/useUserData'
-import Toast from '../../plugin/Toast'
+// import useUserData from '../../plugin/useUserData'
+// import Toast from '../../plugin/Toast'
 
 function Index() {
-  // const [posts, setPosts] = useState([])
-  // const [popularPosts, setPopularPosts] = useState([])
-  // const [category, setCategory] = useState([])
+  const [posts, setPosts] = useState([])
+  const [popularPosts, setPopularPosts] = useState([])
+  const [category, setCategory] = useState([])
 
-  // const fetchPosts = async () => {
-  //   const response = await apiInstance.get(`post/lists/`)
-  //   setPosts(response.data)
-  // }
+  const fetchPosts = async () => {
+    try {
+      const response = await apiInstance.get('post/lists/')
+      console.log(response.data)
+      setPosts(response.data)
+    } catch (error) {
+      console.error('Error fetching posts:', error)
+    }
+  }
 
-  // const fetchPopularPost = () => {
-  //   const sortedPopularPost = posts?.sort((a, b) => b.view - a.view)
-  //   setPopularPosts(sortedPopularPost)
-  // }
+  const fetchPopularPost = () => {
+    const sortedPopularPost = posts?.sort((a, b) => b.view - a.view)
+    setPopularPosts(sortedPopularPost)
+  }
 
-  // const fetchCategory = async () => {
-  //   const response = await apiInstance.get(`post/category/list/`)
-  //   setCategory(response.data)
-  // }
+  const fetchCategory = async () => {
+    try {
+      const response = await apiInstance.get('post/category/list')
+      setCategory(response.data)
+    } catch (error) {
+      console.error('Error fetching category:', error)
+    }
+  }
 
-  // useEffect(() => {
-  //   fetchPosts()
-  //   fetchCategory()
-  // }, [])
 
-  // useEffect(() => {
-  //   fetchPopularPost()
-  // }, [posts])
+  useEffect(() => {
+    fetchPosts()
+    fetchCategory()
+  }, [])
 
-  // // Pagination
-  // const itemsPerPage = 4
-  // const [currentPage, setCurrentPage] = useState(1)
-  // const indexOfLastItem = currentPage * itemsPerPage
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  // const postItems = posts.slice(indexOfFirstItem, indexOfLastItem)
-  // const totalPages = Math.ceil(posts.length / itemsPerPage)
-  // const pageNumbers = Array.from(
-  //   { length: totalPages },
-  //   (_, index) => index + 1
-  // )
+  useEffect(() => {
+    fetchPopularPost()
+  }, [posts])
 
-  // const handleLikePost = async (postId) => {
-  //   const jsonData = {
-  //     user_id: useUserData()?.user_id,
-  //     post_id: postId,
-  //   }
-  //   const response = await apiInstance.post(`post/like-post/`, jsonData)
-  //   console.log(response.data)
-  //   fetchPosts()
+  // Pagination
+  const itemsPerPage = 4
+  const [currentPage, setCurrentPage] = useState(1)
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const postItems = posts.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(posts.length / itemsPerPage)
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  )
 
-  //   Toast('success', response.data.message, '')
-  // }
+  const handleLikePost = async (postId) => {
+    const jsonData = {
+      user_id: useUserData()?.user_id,
+      post_id: postId,
+    }
+    const response = await apiInstance.post(`post/like-post/`, jsonData)
+    console.log(response.data)
+    fetchPosts()
 
-  // const handleBookmarkPost = async (postId) => {
-  //   const jsonData = {
-  //     user_id: useUserData()?.user_id,
-  //     post_id: postId,
-  //   }
-  //   const response = await apiInstance.post(`post/bookmark-post/`, jsonData)
-  //   console.log(response.data)
-  //   fetchPosts()
+    Toast('success', response.data.message, '')
+  }
 
-  //   Toast('success', response.data.message, '')
-  // }
+  const handleBookmarkPost = async (postId) => {
+    const jsonData = {
+      user_id: useUserData()?.user_id,
+      post_id: postId,
+    }
+    const response = await apiInstance.post(`post/bookmark-post/`, jsonData)
+    console.log(response.data)
+    fetchPosts()
+
+    Toast('success', response.data.message, '')
+  }
 
   return (
     <div>
-      {/* <Header /> */}
+      <Header />
       <section className="p-0">
         <div className="container">
           <div className="row">
@@ -206,6 +216,7 @@ function Index() {
               <div className="mb-4">
                 <h2>Categories</h2>
               </div>
+              
               <div className="d-flex flex-wrap justify-content-between">
                 {category?.map((c, index) => (
                   <div className="mt-2" key={index}>
@@ -329,7 +340,7 @@ function Index() {
           </nav>
         </div>
       </section>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }
