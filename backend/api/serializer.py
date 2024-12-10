@@ -123,6 +123,7 @@ class PostSerializer(serializers.ModelSerializer):
         super(PostSerializer, self).__init__(*args, **kwargs)
         request = self.context.get('request')
         if request and request.method == 'POST':
+            print("Received Data:", request.data) 
             self.Meta.depth = 0
         else:
             self.Meta.depth = 1

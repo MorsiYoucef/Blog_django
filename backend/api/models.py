@@ -91,7 +91,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     description =models.TextField(null=True, blank=True)
     tags = models.CharField(max_length=100,default='general')
-    image = models.FileField(upload_to="image",null=True, blank=True)
+    image = models.FileField(upload_to="image",null=True,blank=True)
     status = models.CharField(choices=STATUS, max_length=100)
     view = models.IntegerField(default=0)
     likes = models.ManyToManyField(User, blank=True, related_name="likes_user")
@@ -108,10 +108,8 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if self.slug == '' or self.slug == None:
             self.slug = slugify(self.title) + "-" + shortuuid.uuid()[:2]
-
-            super(Post, self).save(*args, **kwargs)
-            #Entertain and Movie
-            #entertainemnt 
+        super(Post, self).save(*args, **kwargs)
+            
 
 
 class Comment(models.Model):

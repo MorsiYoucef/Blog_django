@@ -287,7 +287,7 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
 
         return Response({"message":"Post successfully created"}, status=status.HTTP_201_CREATED)
     
-class DashboardPostEditAPIView(generics.RetrieveUpdateAPIView):
+class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = api_serializer.PostSerializer
     permission_classes = [AllowAny]
 
@@ -295,34 +295,37 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateAPIView):
         user_id = self.kwargs['user_id']
         post_id = self.kwargs['post_id']
         user = api_models.User.objects.get(id=user_id)
+        return api_models.Post.objects.get(user=user, id=post_id)
 
-        return api_models.Post.objects.get(id=user_id,user=user)
-    
     def update(self, request, *args, **kwargs):
         post_instance = self.get_object()
 
-        user_id = request.data.get("user_id")
-        title = request.data.get("title")
-        image = request.data.get("image")
-        description = request.data.get("description")
-        tags = request.data.get("tags")
-        category_id = request.data.get("category")
-        post_status = request.data.get("post_status")
+        title = request.data.get('title')
+        image = request.data.get('image')
+        description = request.data.get('description')
+        tags = request.data.get('tags')
+        category_id = request.data.get('category')
+        post_status = request.data.get('post_status')
+
+        print(title)
+        print(image)
+        print(description)
+        print(tags)
+        print(category_id)
+        print(post_status)
 
         category = api_models.Category.objects.get(id=category_id)
 
         post_instance.title = title
         if image != "undefined":
             post_instance.image = image
-
         post_instance.description = description
         post_instance.tags = tags
-        post_instance.status - post_status
-
+        post_instance.category = category
+        post_instance.status = post_status
         post_instance.save()
 
-
-        return Response({"message":"Post successfully updated"}, status=status.HTTP_202_ACCEPTED)
+        return Response({"message": "Post Updated Successfully"}, status=status.HTTP_200_OK)
 
 
 
