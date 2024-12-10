@@ -25,11 +25,15 @@ const Toast = Swal.mixin({
 
 // Function to handle user login
 export const login = async (email, password) => {
+  //These are parameters, which the function will take as inputs when called.
+  //login('test@example.com', 'mypassword');
   try {
     // Making a POST request to obtain user tokens
     const { data, status } = await axios.post('user/token/', {
+      // Sends a POST request to the server.
       email,
       password,
+      //The second argument is an object containing the data to send ({ email, password }).
     })
 
     // If the request is successful (status code 200), set authentication user and display success toast
